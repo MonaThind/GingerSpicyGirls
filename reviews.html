@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews | Ginger Spicy Girls</title>
+<meta name="description" content="Every restaurant the Ginger Spicy Girls have bitten, sipped and judged — updated weekly, rated in chillis.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<main>
+
+  <section class="reviews-hero">
+    <div class="wrap">
+      <p class="eyebrow">The full list</p>
+      <h1>Every table we've judged</h1>
+      <p>Real meals, real photos, no sponsored fluff. Updated most weeks &mdash; check back often.</p>
+      <div class="reviews-stats" id="reviewsStats"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px;">
+    <div class="wrap">
+      <div class="reviews-toolbar">
+        <div class="script-line" style="font-size:1.4rem;">Tap any card to read the full review 🌶️</div>
+        <div>
+          <label for="sortSelect" class="eyebrow" style="margin-right:8px;">Sort</label>
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </div>
+      </div>
+      <div class="review-grid" id="allReviews"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/reviews-data.js"></script>
+<script src="js/reviews.js"></script>
+<script>
+  function refresh() {
+    var order = document.getElementById("sortSelect").value;
+    GSG.renderGrid("allReviews", GSG.sortedReviews(order));
+  }
+  document.getElementById("sortSelect").addEventListener("change", refresh);
+  refresh();
+
+  var totalChilis = REVIEWS.reduce(function (sum, r) { return sum + r.chilis; }, 0);
+  document.getElementById("reviewsStats").innerHTML =
+    '<div class="stat"><b>' + REVIEWS.length + '</b><span>Restaurants reviewed</span></div>' +
+    '<div class="stat"><b>' + totalChilis + '</b><span>Chillis handed out</span></div>';
+
+  // If someone links directly to reviews.html#slug, open that review.
+  if (window.location.hash) {
+    var slug = window.location.hash.replace("#", "");
+    setTimeout(function () { GSG.openModal(slug); }, 50);
+  }
+</script>
+</body>
+</html>
